@@ -22,7 +22,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yandex.mobile.ads.common.AdError;
 import com.yandex.mobile.ads.common.AdRequest;
+import com.yandex.mobile.ads.common.AdRequestConfiguration;
 import com.yandex.mobile.ads.common.AdRequestError;
 import com.yandex.mobile.ads.common.ImpressionData;
 import com.yandex.mobile.ads.common.InitializationListener;
@@ -30,6 +32,8 @@ import com.yandex.mobile.ads.common.MobileAds;
 import com.yandex.mobile.ads.rewarded.Reward;
 import com.yandex.mobile.ads.rewarded.RewardedAd;
 import com.yandex.mobile.ads.rewarded.RewardedAdEventListener;
+import com.yandex.mobile.ads.rewarded.RewardedAdLoadListener;
+import com.yandex.mobile.ads.rewarded.RewardedAdLoader;
 
 import ru.plumsoftware.robloxclicker.R;
 import ru.plumsoftware.robloxclicker.data.Data;
@@ -41,8 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private int mul = 1;
     private int imageResId;
     private SharedPreferences sharedPreferences;
-    private RewardedAd rewardedAd;
-    private AdRequest adRequest;
+    @Nullable
+    private RewardedAd mRewardedAd = null;
+    @Nullable
+    private RewardedAdLoader mRewardedAdLoader = null;
     private CustomProgressDialog progressDialog;
 
     @SuppressLint("SetTextI18n")
@@ -68,11 +74,8 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new CustomProgressDialog(this);
         progressDialog.setMessage("Загрузка...");
 
-        MobileAds.initialize(this, new InitializationListener() {
-            @Override
-            public void onInitializationCompleted() {
+        MobileAds.initialize(this, () -> {
 
-            }
         });
 //        endregion
 
@@ -157,71 +160,75 @@ public class MainActivity extends AppCompatActivity {
         ads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 progressDialog.showProgressDialog();
-                adRequest = new AdRequest.Builder().build();
-                rewardedAd = new RewardedAd(MainActivity.this);
-                rewardedAd.setAdUnitId("R-M-2483723-1");
-                rewardedAd.setRewardedAdEventListener(new RewardedAdEventListener() {
+                mRewardedAdLoader = new RewardedAdLoader(MainActivity.this);
+
+                mRewardedAdLoader.setAdLoadListener(new RewardedAdLoadListener() {
                     @Override
-                    public void onAdLoaded() {
+                    public void onAdLoaded(@NonNull final RewardedAd rewardedAd) {
+                        mRewardedAd = rewardedAd;
                         progressDialog.dismissProgressDialog();
-                        rewardedAd.show();
+                        rewardedAd.show(MainActivity.this);
                     }
 
                     @Override
-                    public void onAdFailedToLoad(@NonNull AdRequestError adRequestError) {
+                    public void onAdFailedToLoad(@NonNull final AdRequestError adRequestError) {
                         progressDialog.dismissProgressDialog();
                         Toast.makeText(activity, "Не удалось загрузить реакламу:(\nПопробуйте позже", Toast.LENGTH_SHORT).show();
                     }
-
-                    @Override
-                    public void onAdShown() {
-                        progressDialog.dismissProgressDialog();
-                    }
-
-                    @Override
-                    public void onAdDismissed() {
-                        progressDialog.dismissProgressDialog();
-//                        Toast.makeText(activity, "Вы закрыли рекламу раньшн времени:(\nВы не получите награду", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onRewarded(@NonNull Reward reward) {
-                        CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
-                            @Override
-                            public void onTick(long l) {
-                                mul = 5;
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                mul = 1;
-                            }
-                        };
-                        countDownTimer.start();
-                    }
-
-                    @Override
-                    public void onAdClicked() {
-
-                    }
-
-                    @Override
-                    public void onLeftApplication() {
-
-                    }
-
-                    @Override
-                    public void onReturnedToApplication() {
-
-                    }
-
-                    @Override
-                    public void onImpression(@Nullable ImpressionData impressionData) {
-
-                    }
                 });
-                rewardedAd.loadAd(adRequest);
+
+                if (mRewardedAd != null) {
+                    mRewardedAd.setAdEventListener(new RewardedAdEventListener() {
+                        @Override
+                        public void onAdShown() {
+                            progressDialog.dismissProgressDialog();
+                        }
+
+                        @Override
+                        public void onAdFailedToShow(@NonNull AdError adError) {
+
+                        }
+
+                        @Override
+                        public void onAdDismissed() {
+                            progressDialog.dismissProgressDialog();
+                        }
+
+                        @Override
+                        public void onAdClicked() {
+
+                        }
+
+                        @Override
+                        public void onAdImpression(@Nullable ImpressionData impressionData) {
+
+                        }
+
+                        @Override
+                        public void onRewarded(@NonNull Reward reward) {
+                            CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
+                                @Override
+                                public void onTick(long l) {
+                                    mul = 5;
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    mul = 1;
+                                }
+                            };
+                            countDownTimer.start();
+                        }
+                    });
+                }
+
+                if (mRewardedAdLoader != null ) {
+                    final AdRequestConfiguration adRequestConfiguration =
+                            new AdRequestConfiguration.Builder("R-M-2483723-1").build();
+                    mRewardedAdLoader.loadAd(adRequestConfiguration);
+                }
             }
         });
 
