@@ -19,6 +19,11 @@ public abstract class Data {
             "chr",
             "sr",
             "t",
-            "sr"
+            "sr",
+            "br",
+            "fl",
+            "nj",
+            "njs",
+            "mon"
     };
 }

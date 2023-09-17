@@ -17,7 +17,12 @@ public abstract class Heroes {
             "Человек-Роблокс",
             "Супер Роблокс",
             "Тигрис",
-            "Секретный Роблокс"
+            "Секретный Роблокс",
+            "???",
+            "Ниндзя",
+            "Ниндзя в смокинге",
+            "Флексер",
+            "???"
 
     };
     public static final int[] HEROES_RES_ID = new int[]{
@@ -31,7 +36,12 @@ public abstract class Heroes {
             R.drawable.roblox_9,
             R.drawable.super_roblox_6,
             R.drawable.tigris_roblox_10,
-            R.drawable.secret_roblox_7
+            R.drawable.secret_roblox_7,
+            R.drawable.bird,
+            R.drawable.ninja,
+            R.drawable.ninja_smoking,
+            R.drawable.flex,
+            R.drawable.monster
     };
     public static final int[] HEROES_CLICKS = new int[]{
             1,
@@ -44,7 +54,12 @@ public abstract class Heroes {
             150,
             300,
             500,
-            1000
+            1000,
+            1250,
+            1500,
+            2000,
+            3500,
+            5000
     };
     public static final int[] HEROES_PRICES = new int[]{
             0,
@@ -57,7 +72,12 @@ public abstract class Heroes {
             30000,
             50000,
             100000,
-            500000
+            500000,
+            850000,
+            1000000,
+            1500000,
+            2000000,
+            4000000
     };
 
     public static List<Hero> buildHeroes() {
