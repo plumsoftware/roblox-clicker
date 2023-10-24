@@ -22,8 +22,11 @@ public abstract class Heroes {
             "Ниндзя",
             "Ниндзя в смокинге",
             "Флексер",
-            "???"
-
+            "???",
+            "Цикада",
+            "Аметисто",
+            "Тёмный лорд",
+            "Атомные отходы"
     };
     public static final int[] HEROES_RES_ID = new int[]{
             R.drawable.capitan_roblox_1,
@@ -41,7 +44,11 @@ public abstract class Heroes {
             R.drawable.ninja,
             R.drawable.ninja_smoking,
             R.drawable.flex,
-            R.drawable.monster
+            R.drawable.monster,
+            R.drawable.cicada,
+            R.drawable.amethysto,
+            R.drawable.darkmatter,
+            R.drawable.atomic_waste
     };
     public static final int[] HEROES_CLICKS = new int[]{
             1,
@@ -59,25 +66,33 @@ public abstract class Heroes {
             1500,
             2000,
             3500,
-            5000
+            5000,
+            10000,
+            15000,
+            30000,
+            45000
     };
     public static final int[] HEROES_PRICES = new int[]{
             0,
             100,
             500,
-            1500,
-            5000,
+            3000,
             10000,
-            15000,
-            30000,
+            25000,
             50000,
             100000,
+            150000,
+            300000,
             500000,
             850000,
             1000000,
             1500000,
-            2000000,
-            4000000
+            3000000,
+            5000000,
+            7000000,
+            9000000,
+            12000000,
+            15000000
     };
 
     public static List<Hero> buildHeroes() {
