@@ -24,6 +24,10 @@ public abstract class Data {
             "fl",
             "nj",
             "njs",
-            "mon"
+            "mon",
+            "ci",
+            "ame",
+            "darkm",
+            "atow"
     };
 }
