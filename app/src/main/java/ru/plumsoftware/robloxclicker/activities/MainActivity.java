@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private final String AD_UNIT_ID = "R-M-2483723-3";
     private final AdRequestConfiguration adRequestConfiguration = new AdRequestConfiguration.Builder(AD_UNIT_ID).build();
 
-    private  AppOpenAd mAppOpenAd = null;
+    private AppOpenAd mAppOpenAd = null;
     private CustomProgressDialog progressDialog;
 
     @SuppressLint("SetTextI18n")
@@ -79,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
 //        region::Base variables
         Context context = MainActivity.this;
         Activity activity = MainActivity.this;
+
+        sharedPreferences = context.getSharedPreferences(Data.SP_NAME, Context.MODE_PRIVATE);
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+        layout.setBackgroundResource(sharedPreferences.getInt(Data.SP_IMAGE_BACK_RES_ID, R.drawable.background_1));
 
         progressDialog = new CustomProgressDialog(context);
         progressDialog.setMessage("Загрузка...");
@@ -148,9 +154,11 @@ public class MainActivity extends AppCompatActivity {
 //        region::Find views
         ImageView ads = (ImageView) findViewById(R.id.ads);
         ImageView buy = (ImageView) findViewById(R.id.buy);
+        ImageView buyBack = (ImageView) findViewById(R.id.buy_back);
         ImageView image = (ImageView) findViewById(R.id.image);
         TextView textViewScore = (TextView) findViewById(R.id.textViewScore);
         CardView cardShop = (CardView) findViewById(R.id.cardShop);
+        CardView cardBackgroundShop = (CardView) findViewById(R.id.cardShopBack);
         CardView cardAds = (CardView) findViewById(R.id.cardAds);
 //        endregion
 
@@ -161,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
 //        endregion
 
 //        region::Get data
-        sharedPreferences = context.getSharedPreferences(Data.SP_NAME, Context.MODE_PRIVATE);
         score = sharedPreferences.getLong(Data.SP_SCORE, 0);
         click = sharedPreferences.getInt(Data.SP_CLICK, 1);
         imageResId = sharedPreferences.getInt(Data.SP_IMAGE_RES_ID, R.drawable.capitan_roblox_1);
@@ -290,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
 
-                if (mRewardedAdLoader != null ) {
+                if (mRewardedAdLoader != null) {
                     final AdRequestConfiguration adRequestConfiguration =
                             new AdRequestConfiguration.Builder("R-M-2483723-1").build();
                     mRewardedAdLoader.loadAd(adRequestConfiguration);
@@ -346,6 +353,38 @@ public class MainActivity extends AppCompatActivity {
                         cardShop.setScaleX(1.0f);
                         cardShop.setScaleY(1.0f);
                         cardShop.setCardBackgroundColor(context.getResources().getColor(R.color.color_4));
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                }
+                return false;
+            }
+        });
+
+        buyBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(new Intent(context, BackgroundShopActivity.class));
+            }
+        });
+
+        buyBack.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Уменьшаем размер view
+                        cardBackgroundShop.setScaleX(0.9f);
+                        cardBackgroundShop.setScaleY(0.9f);
+                        cardBackgroundShop.setCardBackgroundColor(context.getResources().getColor(R.color.color_2));
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        // Возвращаем исходный размер view
+                        cardBackgroundShop.setScaleX(1.0f);
+                        cardBackgroundShop.setScaleY(1.0f);
+                        cardBackgroundShop.setCardBackgroundColor(context.getResources().getColor(R.color.color_4));
                         break;
                     case MotionEvent.ACTION_CANCEL:
                 }

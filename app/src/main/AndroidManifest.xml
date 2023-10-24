@@ -17,6 +17,9 @@
         android:theme="@style/Base.Theme.РоблоксКликер"
         tools:targetApi="31">
         <activity
+            android:name=".activities.BackgroundShopActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ShopActivity"
             android:exported="false" />
         <activity

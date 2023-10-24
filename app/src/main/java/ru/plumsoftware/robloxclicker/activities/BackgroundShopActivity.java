@@ -1,28 +1,23 @@
 package ru.plumsoftware.robloxclicker.activities;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.widget.TextView;
+
 import com.yandex.mobile.ads.common.AdError;
-import com.yandex.mobile.ads.common.AdRequest;
 import com.yandex.mobile.ads.common.AdRequestConfiguration;
 import com.yandex.mobile.ads.common.AdRequestError;
 import com.yandex.mobile.ads.common.ImpressionData;
-import com.yandex.mobile.ads.common.InitializationListener;
 import com.yandex.mobile.ads.common.MobileAds;
 import com.yandex.mobile.ads.interstitial.InterstitialAd;
 import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
@@ -32,13 +27,16 @@ import com.yandex.mobile.ads.interstitial.InterstitialAdLoader;
 import java.util.List;
 
 import ru.plumsoftware.robloxclicker.R;
+import ru.plumsoftware.robloxclicker.adapter.BackAdapter;
 import ru.plumsoftware.robloxclicker.adapter.HeroAdapter;
 import ru.plumsoftware.robloxclicker.data.Data;
 import ru.plumsoftware.robloxclicker.dialogs.CustomProgressDialog;
+import ru.plumsoftware.robloxclicker.heroes.Back;
+import ru.plumsoftware.robloxclicker.heroes.Backs;
 import ru.plumsoftware.robloxclicker.heroes.Hero;
 import ru.plumsoftware.robloxclicker.heroes.Heroes;
 
-public class ShopActivity extends AppCompatActivity {
+public class BackgroundShopActivity extends AppCompatActivity {
     private long score;
     private int click;
     private int imageResId;
@@ -53,17 +51,17 @@ public class ShopActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shop);
+        setContentView(R.layout.activity_background_shop);
 
 //        region::Base variables
-        Context context = ShopActivity.this;
-        Activity activity = ShopActivity.this;
+        Context context = BackgroundShopActivity.this;
+        Activity activity = BackgroundShopActivity.this;
 
         MobileAds.initialize(this, () -> {
 
         });
 
-        mInterstitialAdLoader = new InterstitialAdLoader(ShopActivity.this);
+        mInterstitialAdLoader = new InterstitialAdLoader(BackgroundShopActivity.this);
         mInterstitialAdLoader.setAdLoadListener(new InterstitialAdLoadListener() {
             @Override
             public void onAdLoaded(@NonNull final InterstitialAd interstitialAd) {
@@ -85,14 +83,14 @@ public class ShopActivity extends AppCompatActivity {
                         public void onAdDismissed() {
                             finish();
                             overridePendingTransition(0, 0);
-                            startActivity(new Intent(ShopActivity.this, MainActivity.class));
+                            startActivity(new Intent(BackgroundShopActivity.this, MainActivity.class));
                         }
 
                         @Override
                         public void onAdClicked() {
                             finish();
                             overridePendingTransition(0, 0);
-                            startActivity(new Intent(ShopActivity.this, MainActivity.class));
+                            startActivity(new Intent(BackgroundShopActivity.this, MainActivity.class));
                         }
 
                         @Override
@@ -101,7 +99,7 @@ public class ShopActivity extends AppCompatActivity {
                         }
                     });
                 }
-                mInterstitialAd.show(ShopActivity.this);
+                mInterstitialAd.show(BackgroundShopActivity.this);
             }
 
             @Override
@@ -109,20 +107,16 @@ public class ShopActivity extends AppCompatActivity {
                 progressDialog.dismissProgressDialog();
                 finish();
                 overridePendingTransition(0, 0);
-                startActivity(new Intent(ShopActivity.this, MainActivity.class));
+                startActivity(new Intent(BackgroundShopActivity.this, MainActivity.class));
             }
         });
-        progressDialog = new CustomProgressDialog(ShopActivity.this);
+        progressDialog = new CustomProgressDialog(BackgroundShopActivity.this);
         progressDialog.setMessage("Загрузка...");
 //        endregion
 
 //        region::Find views
         TextView textViewScore2 = (TextView) activity.findViewById(R.id.textViewScore2);
         RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerViewHeroes);
-//        endregion
-
-//        region::Animations
-
 //        endregion
 
 //        region::Get data
@@ -140,20 +134,16 @@ public class ShopActivity extends AppCompatActivity {
 
 //        region::Setup heroes
         textViewScore2.setText(Long.toString(score));
-        List<Hero> list = Heroes.buildHeroes();
+        List<Back> list = Backs.buildHeroes();
         for (int i = 0; i < list.size(); i++) {
-            Hero hero = list.get(i);
-            hero.setBuy(sharedPreferences.getBoolean(Data.SP_HEROES_IS_BUY[i], false));
-            list.set(i, hero);
+            Back back = list.get(i);
+            back.setBuy(sharedPreferences.getBoolean(Data.SP_BACK_IS_BUY[i], false));
+            list.set(i, back);
         }
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new HeroAdapter(context, list));
-//        endregion
-
-//        region::Clickers
-
+        recyclerView.setAdapter(new BackAdapter(context, list));
 //        endregion
     }
 
