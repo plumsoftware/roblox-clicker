@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -61,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
     private AppOpenAd mAppOpenAd = null;
     private CustomProgressDialog progressDialog;
 
+    private ImageView image;
+    private TextView textViewScore;
+
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,67 +92,75 @@ public class MainActivity extends AppCompatActivity {
         layout.setBackgroundResource(sharedPreferences.getInt(Data.SP_IMAGE_BACK_RES_ID, R.drawable.background_1));
 
         progressDialog = new CustomProgressDialog(context);
-        progressDialog.setMessage("Загрузка...");
-        progressDialog.showProgressDialog();
 
         MobileAds.initialize(this, () -> {
 
         });
 
-        appOpenAdLoader = new AppOpenAdLoader(context);
-        AppOpenAdLoadListener appOpenAdLoadListener = new AppOpenAdLoadListener() {
-            @Override
-            public void onAdLoaded(@NonNull final AppOpenAd appOpenAd) {
-                // The ad was loaded successfully. Now you can show loaded ad.
-                mAppOpenAd = appOpenAd;
+        if (sharedPreferences.getBoolean("isShowAppOpen", true)) {
+            progressDialog.setMessage("Загрузка...");
+            progressDialog.showProgressDialog();
+            appOpenAdLoader = new AppOpenAdLoader(context);
+            AppOpenAdLoadListener appOpenAdLoadListener = new AppOpenAdLoadListener() {
+                @Override
+                public void onAdLoaded(@NonNull final AppOpenAd appOpenAd) {
+                    // The ad was loaded successfully. Now you can show loaded ad.
+                    mAppOpenAd = appOpenAd;
+                    mAppOpenAd.show(activity);
+                    progressDialog.dismissProgressDialog();
+                    sharedPreferences.edit().putBoolean("isShowAppOpen", false).apply();
+                }
+
+                @Override
+                public void onAdFailedToLoad(@NonNull final AdRequestError adRequestError) {
+                    // Ad failed to load with AdRequestError.
+                    // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
+                    progressDialog.dismissProgressDialog();
+                }
+            };
+            appOpenAdLoader.setAdLoadListener(appOpenAdLoadListener);
+            appOpenAdLoader.loadAd(adRequestConfiguration);
+
+            AppOpenAdEventListener appOpenAdEventListener = new AppOpenAdEventListener() {
+                @Override
+                public void onAdShown() {
+                    // Called when ad is shown.
+                    progressDialog.dismissProgressDialog();
+                }
+
+                @Override
+                public void onAdFailedToShow(@NonNull final AdError adError) {
+                    // Called when ad failed to show.
+                    progressDialog.dismissProgressDialog();
+                }
+
+                @Override
+                public void onAdDismissed() {
+                    // Called when ad is dismissed.
+                    // Clean resources after dismiss and preload new ad.
+                    progressDialog.dismissProgressDialog();
+                }
+
+                @Override
+                public void onAdClicked() {
+                    // Called when a click is recorded for an ad.
+                    progressDialog.dismissProgressDialog();
+                }
+
+                @Override
+                public void onAdImpression(@Nullable final ImpressionData impressionData) {
+                    // Called when an impression is recorded for an ad.
+                    progressDialog.dismissProgressDialog();
+                }
+            };
+
+            if (mAppOpenAd != null) {
+                mAppOpenAd.setAdEventListener(appOpenAdEventListener);
+            }
+
+            if (mAppOpenAd != null) {
                 mAppOpenAd.show(activity);
-                progressDialog.dismissProgressDialog();
             }
-
-            @Override
-            public void onAdFailedToLoad(@NonNull final AdRequestError adRequestError) {
-                // Ad failed to load with AdRequestError.
-                // Attempting to load a new ad from the onAdFailedToLoad() method is strongly discouraged.
-                progressDialog.dismissProgressDialog();
-            }
-        };
-        appOpenAdLoader.setAdLoadListener(appOpenAdLoadListener);
-        appOpenAdLoader.loadAd(adRequestConfiguration);
-
-        AppOpenAdEventListener appOpenAdEventListener = new AppOpenAdEventListener() {
-            @Override
-            public void onAdShown() {
-                // Called when ad is shown.
-            }
-
-            @Override
-            public void onAdFailedToShow(@NonNull final AdError adError) {
-                // Called when ad failed to show.
-            }
-
-            @Override
-            public void onAdDismissed() {
-                // Called when ad is dismissed.
-                // Clean resources after dismiss and preload new ad.
-            }
-
-            @Override
-            public void onAdClicked() {
-                // Called when a click is recorded for an ad.
-            }
-
-            @Override
-            public void onAdImpression(@Nullable final ImpressionData impressionData) {
-                // Called when an impression is recorded for an ad.
-            }
-        };
-
-        if (mAppOpenAd != null) {
-            mAppOpenAd.setAdEventListener(appOpenAdEventListener);
-        }
-
-        if (mAppOpenAd != null) {
-            mAppOpenAd.show(activity);
         }
 //        endregion
 
@@ -155,8 +168,8 @@ public class MainActivity extends AppCompatActivity {
         ImageView ads = (ImageView) findViewById(R.id.ads);
         ImageView buy = (ImageView) findViewById(R.id.buy);
         ImageView buyBack = (ImageView) findViewById(R.id.buy_back);
-        ImageView image = (ImageView) findViewById(R.id.image);
-        TextView textViewScore = (TextView) findViewById(R.id.textViewScore);
+        image = (ImageView) findViewById(R.id.image);
+        textViewScore = (TextView) findViewById(R.id.textViewScore);
         CardView cardShop = (CardView) findViewById(R.id.cardShop);
         CardView cardBackgroundShop = (CardView) findViewById(R.id.cardShopBack);
         CardView cardAds = (CardView) findViewById(R.id.cardAds);
@@ -179,8 +192,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
                 textViewScore.setText(Long.toString(sharedPreferences.getLong(Data.SP_SCORE, 0)));
-                image.setImageResource(sharedPreferences.getInt(Data.SP_IMAGE_RES_ID, R.drawable.capitan_roblox_1));
+                imageResId = sharedPreferences.getInt(Data.SP_IMAGE_RES_ID, R.drawable.capitan_roblox_1);
+                image.setImageResource(imageResId);
                 click = sharedPreferences.getInt(Data.SP_CLICK, 1);
+                score = sharedPreferences.getLong(Data.SP_SCORE, 0);
+                textViewScore.setText(Long.toString(score));
             }
         });
 //        endregion
@@ -394,6 +410,8 @@ public class MainActivity extends AppCompatActivity {
 //        endregion
     }
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -401,5 +419,7 @@ public class MainActivity extends AppCompatActivity {
             mAppOpenAd.setAdEventListener(null);
             mAppOpenAd = null;
         }
+
+        sharedPreferences.edit().putBoolean("isShowAppOpen", true).apply();
     }
 }

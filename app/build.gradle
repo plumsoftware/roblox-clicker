@@ -10,8 +10,8 @@ android {
         applicationId "ru.plumsoftware.robloxclicker"
         minSdk 22
         targetSdk 34
-        versionCode 5
-        versionName "5.0.0 - MEGA SUPER ULTRA MEGA SUPER ULTRA ULTRA UPDATE"
+        versionCode 7
+        versionName "7.0.0 - MEGA SUPER ULTRA MEGA SUPER ULTRA ULTRA UPDATE"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

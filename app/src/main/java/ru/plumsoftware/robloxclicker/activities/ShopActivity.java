@@ -160,6 +160,7 @@ public class ShopActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         progressDialog.showProgressDialog();
+        sharedPreferences.edit().putBoolean("isShowAppOpen", false).apply();
         if (mInterstitialAdLoader != null) {
             final AdRequestConfiguration adRequestConfiguration =
                     new AdRequestConfiguration.Builder("R-M-2483723-2").build();
