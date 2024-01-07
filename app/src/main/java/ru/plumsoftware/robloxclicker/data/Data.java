@@ -35,6 +35,7 @@ public abstract class Data {
     public static final String[] SP_BACK_IS_BUY = new String[]{
             "back_2",
             "back_3",
-            "back_4"
+            "back_4",
+            "back_5"
     };
 }
