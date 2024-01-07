@@ -257,6 +257,44 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAdLoaded(@NonNull final RewardedAd rewardedAd) {
                         mRewardedAd = rewardedAd;
+
+                        mRewardedAd.setAdEventListener(new RewardedAdEventListener() {
+                            @Override
+                            public void onAdShown() {
+                                progressDialog.dismissProgressDialog();
+                            }
+
+                            @Override
+                            public void onAdFailedToShow(@NonNull AdError adError) {
+
+                            }
+
+                            @Override
+                            public void onAdDismissed() {
+                                progressDialog.dismissProgressDialog();
+                            }
+
+                            @Override
+                            public void onAdClicked() {
+
+                            }
+
+                            @Override
+                            public void onAdImpression(@Nullable ImpressionData impressionData) {
+
+                            }
+
+                            @Override
+                            public void onRewarded(@NonNull Reward reward) {
+                                mul = 5;
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mul = 1;
+                                    }
+                                }, 5000);
+                            }
+                        });
                         progressDialog.dismissProgressDialog();
                         rewardedAd.show(MainActivity.this);
                     }
@@ -267,51 +305,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(activity, "Не удалось загрузить реакламу:(\nПопробуйте позже", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                if (mRewardedAd != null) {
-                    mRewardedAd.setAdEventListener(new RewardedAdEventListener() {
-                        @Override
-                        public void onAdShown() {
-                            progressDialog.dismissProgressDialog();
-                        }
-
-                        @Override
-                        public void onAdFailedToShow(@NonNull AdError adError) {
-
-                        }
-
-                        @Override
-                        public void onAdDismissed() {
-                            progressDialog.dismissProgressDialog();
-                        }
-
-                        @Override
-                        public void onAdClicked() {
-
-                        }
-
-                        @Override
-                        public void onAdImpression(@Nullable ImpressionData impressionData) {
-
-                        }
-
-                        @Override
-                        public void onRewarded(@NonNull Reward reward) {
-                            CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
-                                @Override
-                                public void onTick(long l) {
-                                    mul = 5;
-                                }
-
-                                @Override
-                                public void onFinish() {
-                                    mul = 1;
-                                }
-                            };
-                            countDownTimer.start();
-                        }
-                    });
-                }
 
                 if (mRewardedAdLoader != null) {
                     final AdRequestConfiguration adRequestConfiguration =
@@ -409,7 +402,6 @@ public class MainActivity extends AppCompatActivity {
         });
 //        endregion
     }
-
 
 
     @Override
