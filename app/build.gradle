@@ -10,8 +10,8 @@ android {
         applicationId "ru.plumsoftware.robloxclicker"
         minSdk 22
         targetSdk 34
-        versionCode 9
-        versionName "9.0.0 - SUPER UPDATE"
+        versionCode 10
+        versionName "10.0.0 - ULTRA SUPER UPDATE"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,5 +37,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    implementation 'com.yandex.android:mobileads:6.3.0'
+    implementation 'com.yandex.android:mobileads:6.4.1'
 }

@@ -26,7 +26,8 @@ public abstract class Heroes {
             "Цикада",
             "Аметисто",
             "Тёмный лорд",
-            "Атомные отходы"
+            "Атомные отходы",
+            "Элитный секретный персонаж"
     };
     public static final int[] HEROES_RES_ID = new int[]{
             R.drawable.capitan_roblox_1,
@@ -48,7 +49,8 @@ public abstract class Heroes {
             R.drawable.cicada,
             R.drawable.amethysto,
             R.drawable.darkmatter,
-            R.drawable.atomic_waste
+            R.drawable.atomic_waste,
+            R.drawable.skibidi_touilet_1
     };
     public static final int[] HEROES_CLICKS = new int[]{
             1,
@@ -70,7 +72,8 @@ public abstract class Heroes {
             10000,
             15000,
             30000,
-            45000
+            45000,
+            50000
     };
     public static final int[] HEROES_PRICES = new int[]{
             0,
@@ -92,7 +95,8 @@ public abstract class Heroes {
             7000000,
             9000000,
             12000000,
-            15000000
+            15000000,
+            25000000
     };
 
     public static List<Hero> buildHeroes() {
