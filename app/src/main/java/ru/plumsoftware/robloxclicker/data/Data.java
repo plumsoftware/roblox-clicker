@@ -33,7 +33,8 @@ public abstract class Data {
             "skibidi",
             "shrec",
             "spider",
-            "brick"
+            "brick",
+            "skuf_srek_1"
     };
 
     public static final String[] SP_BACK_IS_BUY = new String[]{
@@ -42,6 +43,7 @@ public abstract class Data {
             "back_4",
             "back_5",
             "back_6",
-            "back_7"
+            "back_7",
+            "back_8"
     };
 }
