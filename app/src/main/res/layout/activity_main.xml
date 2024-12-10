@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:contentDescription="@string/click_img_content_description"
         android:elevation="24dp"
         android:padding="48dp"
         app:srcCompat="@drawable/capitan_roblox_1" />
@@ -64,7 +65,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="8dp"
                 app:cardBackgroundColor="@color/color_4"
-                app:cardCornerRadius="45dp"
+                app:cardCornerRadius="35dp"
                 app:cardElevation="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -126,7 +127,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="8dp"
                 app:cardBackgroundColor="@color/color_4"
-                app:cardCornerRadius="45dp"
+                app:cardCornerRadius="35dp"
                 app:cardElevation="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -202,7 +203,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="8dp"
                 app:cardBackgroundColor="@color/color_4"
-                app:cardCornerRadius="45dp"
+                app:cardCornerRadius="35dp"
                 app:cardElevation="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -250,4 +251,10 @@
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
+    <com.yandex.mobile.ads.banner.BannerAdView
+    android:id="@+id/ad_banner_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent" />
 </LinearLayout>
