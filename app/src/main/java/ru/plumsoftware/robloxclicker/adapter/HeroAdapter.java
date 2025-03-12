@@ -25,7 +25,6 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroViewHolder> {
     private List<Hero> list;
 
     private SharedPreferences sharedPreferences;
-    private int gonePrice = 1;
 //    private AdRequest adRequest;
 //    private CustomProgressDialog progressDialog;
 //    private InterstitialAd interstitialAd;
@@ -88,12 +87,7 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroViewHolder> {
             });
         } else {
             holder.textViewPrice.setVisibility(View.VISIBLE);
-            if (gonePrice < 3) {
-                holder.textViewPrice.setText(Long.toString(hero.getPrice()));
-            } else {
-                holder.textViewPrice.setText("???");
-            }
-            gonePrice = gonePrice + 1;
+            holder.textViewPrice.setText(Long.toString(hero.getPrice()));
 
             holder.lay.setOnClickListener(new View.OnClickListener() {
                 @Override
