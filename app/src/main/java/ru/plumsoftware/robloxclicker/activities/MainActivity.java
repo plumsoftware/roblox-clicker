@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mRewardedAdLoader != null) {
                     final AdRequestConfiguration adRequestConfiguration =
-                            new AdRequestConfiguration.Builder("R-M-2483723-1").build();
+                            new AdRequestConfiguration.Builder("R-M-14496186-5").build();
                     mRewardedAdLoader.loadAd(adRequestConfiguration);
                 }
             }
