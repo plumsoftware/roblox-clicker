@@ -26,7 +26,6 @@ public class BackAdapter extends RecyclerView.Adapter<BackViewHolder> {
     private List<Back> list;
 
     private SharedPreferences sharedPreferences;
-    private int gonePrice = 1;
 //    private AdRequest adRequest;
 //    private CustomProgressDialog progressDialog;
 //    private InterstitialAd interstitialAd;
@@ -88,12 +87,7 @@ public class BackAdapter extends RecyclerView.Adapter<BackViewHolder> {
             });
         } else {
             holder.textViewPrice.setVisibility(View.VISIBLE);
-            if (gonePrice < 3) {
-                holder.textViewPrice.setText(Long.toString(back.getPrice()));
-            } else {
-                holder.textViewPrice.setText("???");
-            }
-            gonePrice = gonePrice + 1;
+            holder.textViewPrice.setText(Long.toString(back.getPrice()));
 
             holder.lay.setOnClickListener(new View.OnClickListener() {
                 @Override
