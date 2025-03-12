@@ -16,11 +16,13 @@ public abstract class Data {
             "c",
             "d",
             "no",
+            "hl",
             "o",
             "chr",
             "sr",
             "t",
             "sr",
+            "sqgg",
             "br",
             "fl",
             "nj",
@@ -31,6 +33,7 @@ public abstract class Data {
             "darkm",
             "atow",
             "skibidi",
+            "mm",
             "shrec",
             "spider",
             "brick",
@@ -41,9 +44,10 @@ public abstract class Data {
             "back_2",
             "back_3",
             "back_4",
+            "back_9",
             "back_5",
             "back_6",
             "back_7",
-            "back_8"
+            "back_8",
     };
 }

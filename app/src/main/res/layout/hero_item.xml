@@ -22,9 +22,10 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingTop="8dp">
 
@@ -36,57 +37,71 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0"
-            android:fontFamily="@font/lilita_one_regular"
-            android:gravity="center"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:text="0"
-            android:textColor="@color/color_5"
-            android:textSize="14sp"
-            android:visibility="gone" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_weight="0"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical|end"
+            android:gravity="center_vertical|end"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="32dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/cursor_icon" />
+                android:foregroundGravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/cursor_icon" />
+
+                <TextView
+                    android:id="@+id/textViewClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nougat_extra_black"
+                    android:gravity="center"
+                    android:maxWidth="150dp"
+                    android:minHeight="80dp"
+                    android:paddingStart="4dp"
+                    android:text="x 1"
+                    android:textColor="@color/color_2"
+                    android:textSize="24sp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/textViewClick"
+                android:id="@+id/textViewPrice"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fontFamily="@font/nougat_extra_black"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/lilita_one_regular"
                 android:gravity="center"
-                android:paddingStart="4dp"
-                android:text="x 1"
-                android:textColor="@color/color_2"
-                android:textSize="24sp" />
-        </LinearLayout>
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="0"
+                android:textColor="@color/color_5"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/imageViewIsBuy"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_weight="0"
-            android:visibility="gone"
-            app:srcCompat="@drawable/done_icon" />
+            <ImageView
+                android:id="@+id/imageViewIsBuy"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0"
+                android:visibility="gone"
+                app:srcCompat="@drawable/done_icon" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
