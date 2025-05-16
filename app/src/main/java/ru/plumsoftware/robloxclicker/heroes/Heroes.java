@@ -34,7 +34,10 @@ public abstract class Heroes {
             "Шрекус",
             "Человек паук Роблокс",
             "Строитель Роблокс",
-            "Скуф - брокколи"
+            "Скуф - брокколи",
+            "Пожилое яблоко",
+            "Шо",
+            "Бомбардиро-крокадило"
     };
     public static final int[] HEROES_RES_ID = new int[]{
             R.drawable.capitan_roblox_1,
@@ -64,7 +67,10 @@ public abstract class Heroes {
             R.drawable.shrecus,
             R.drawable.spider,
             R.drawable.builder_1,
-            R.drawable.skuf_shek
+            R.drawable.skuf_shek,
+            R.drawable.apple_valacas,
+            R.drawable.glad_beautiful,
+            R.drawable.bombardiro_crocadilo
     };
     public static final int[] HEROES_CLICKS = new int[]{
             1,
@@ -94,7 +100,10 @@ public abstract class Heroes {
             60000,
             70000,
             80000,
-            95000
+            95000,
+            110000,
+            150000,
+            200000
     };
     public static final int[] HEROES_PRICES = new int[]{
             0,
@@ -125,7 +134,10 @@ public abstract class Heroes {
             45000000,
             55000000,
             60000000,
-            75000000
+            75000000,
+            12000000,
+            18000000,
+            25000000
     };
 
     public static List<Hero> buildHeroes() {

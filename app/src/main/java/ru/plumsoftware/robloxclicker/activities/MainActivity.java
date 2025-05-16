@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     private RewardedAdLoader mRewardedAdLoader = null;
     private AppOpenAdLoader appOpenAdLoader = null;
-    private final String AD_UNIT_ID = "R-M-14496186-2";
+    private final String AD_UNIT_ID = "R-M-2483723-3";
     private final AdRequestConfiguration adRequestConfiguration = new AdRequestConfiguration.Builder(AD_UNIT_ID).build();
 
     private AppOpenAd mAppOpenAd = null;
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             bannerHeight = (int) (screenHeight * 0.04);
         }
 
-        mBannerAdView.setAdUnitId("R-M-14496186-1"); //RuStore
+        mBannerAdView.setAdUnitId("R-M-2483723-5"); //RuStore
         mBannerAdView.setAdSize(BannerAdSize.inlineSize(MainActivity.this, screenWidth, bannerHeight));
         final AdRequest adRequestB = new AdRequest.Builder().build();
         mBannerAdView.setBannerAdEventListener(new BannerAdEventListener() {
@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mRewardedAdLoader != null) {
                     final AdRequestConfiguration adRequestConfiguration =
-                            new AdRequestConfiguration.Builder("R-M-14496186-5").build();
+                            new AdRequestConfiguration.Builder("R-M-2483723-1").build();
                     mRewardedAdLoader.loadAd(adRequestConfiguration);
                 }
             }
