@@ -37,7 +37,10 @@ public abstract class Data {
             "shrec",
             "spider",
             "brick",
-            "skuf_srek_1"
+            "skuf_srek_1",
+            "apl_val",
+            "val_beut",
+            "bombar_croko"
     };
 
     public static final String[] SP_BACK_IS_BUY = new String[]{

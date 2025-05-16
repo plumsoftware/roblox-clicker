@@ -163,7 +163,7 @@ public class ShopActivity extends AppCompatActivity {
         sharedPreferences.edit().putBoolean("isShowAppOpen", false).apply();
         if (mInterstitialAdLoader != null) {
             final AdRequestConfiguration adRequestConfiguration =
-                    new AdRequestConfiguration.Builder("R-M-14496186-3").build();
+                    new AdRequestConfiguration.Builder("R-M-2483723-2").build();
             mInterstitialAdLoader.loadAd(adRequestConfiguration);
         }
     }
