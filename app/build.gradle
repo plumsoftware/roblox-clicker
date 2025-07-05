@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace 'ru.plumsoftware.robloxclicker'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "ru.plumsoftware.robloxclicker"
         minSdk 22
-        targetSdk 35
-        versionCode 19
-        versionName "16.0.1"
+        targetSdk 36
+        versionCode 20
+        versionName "16.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,5 +41,5 @@ dependencies {
 //    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
 //    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
-    implementation 'com.yandex.android:mobileads:7.12.2'
+    implementation 'com.yandex.android:mobileads:7.14.1'
 }

@@ -34,6 +34,7 @@ import java.util.List;
 import ru.plumsoftware.robloxclicker.R;
 import ru.plumsoftware.robloxclicker.adapter.HeroAdapter;
 import ru.plumsoftware.robloxclicker.data.Data;
+import ru.plumsoftware.robloxclicker.data.ads.RuStore;
 import ru.plumsoftware.robloxclicker.dialogs.CustomProgressDialog;
 import ru.plumsoftware.robloxclicker.heroes.Hero;
 import ru.plumsoftware.robloxclicker.heroes.Heroes;
@@ -163,7 +164,7 @@ public class ShopActivity extends AppCompatActivity {
         sharedPreferences.edit().putBoolean("isShowAppOpen", false).apply();
         if (mInterstitialAdLoader != null) {
             final AdRequestConfiguration adRequestConfiguration =
-                    new AdRequestConfiguration.Builder("R-M-2483723-2").build();
+                    new AdRequestConfiguration.Builder(new RuStore().getInterstitial()).build();
             mInterstitialAdLoader.loadAd(adRequestConfiguration);
         }
     }

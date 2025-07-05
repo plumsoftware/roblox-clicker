@@ -47,6 +47,8 @@ import com.yandex.mobile.ads.rewarded.RewardedAdLoader;
 
 import ru.plumsoftware.robloxclicker.R;
 import ru.plumsoftware.robloxclicker.data.Data;
+import ru.plumsoftware.robloxclicker.data.ads.AdsData;
+import ru.plumsoftware.robloxclicker.data.ads.RuStore;
 import ru.plumsoftware.robloxclicker.dialogs.CustomProgressDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     private RewardedAdLoader mRewardedAdLoader = null;
     private AppOpenAdLoader appOpenAdLoader = null;
-    private final String AD_UNIT_ID = "R-M-2483723-3";
+    private AdsData adsConfig = new RuStore();
+    private final String AD_UNIT_ID = adsConfig.getOpen();
     private final AdRequestConfiguration adRequestConfiguration = new AdRequestConfiguration.Builder(AD_UNIT_ID).build();
 
     private AppOpenAd mAppOpenAd = null;
@@ -120,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             bannerHeight = (int) (screenHeight * 0.04);
         }
 
-        mBannerAdView.setAdUnitId("R-M-2483723-5"); //RuStore
+        mBannerAdView.setAdUnitId(adsConfig.getBanner()); //RuStore
         mBannerAdView.setAdSize(BannerAdSize.inlineSize(MainActivity.this, screenWidth, bannerHeight));
         final AdRequest adRequestB = new AdRequest.Builder().build();
         mBannerAdView.setBannerAdEventListener(new BannerAdEventListener() {
@@ -370,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mRewardedAdLoader != null) {
                     final AdRequestConfiguration adRequestConfiguration =
-                            new AdRequestConfiguration.Builder("R-M-2483723-1").build();
+                            new AdRequestConfiguration.Builder(adsConfig.getRewarded()).build();
                     mRewardedAdLoader.loadAd(adRequestConfiguration);
                 }
             }
