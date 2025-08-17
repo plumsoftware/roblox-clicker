@@ -4,12 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -25,6 +30,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.yandex.mobile.ads.appopenad.AppOpenAd;
 import com.yandex.mobile.ads.appopenad.AppOpenAdEventListener;
 import com.yandex.mobile.ads.appopenad.AppOpenAdLoadListener;
@@ -74,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final double TABLET_SCREEN_SIZE_THRESHOLD = 7.0;
 
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -105,6 +115,16 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, () -> {
 
         });
+        FirebaseApp.initializeApp(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        1001);
+            }
+        }
 
         BannerAdView mBannerAdView = (BannerAdView) findViewById(R.id.ad_banner_view);
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -468,6 +488,16 @@ public class MainActivity extends AppCompatActivity {
 //        endregion
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+    }
 
     @Override
     protected void onDestroy() {
@@ -478,5 +508,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         sharedPreferences.edit().putBoolean("isShowAppOpen", true).apply();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {} else {}
+        }
     }
 }
