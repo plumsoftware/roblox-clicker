@@ -13,4 +13,6 @@
     <color name="color_3">#35FF23</color>
     <color name="color_4">#C9B976</color>
     <color name="color_5">#6A6A6A</color>
+
+    <color name="default_notification_color">#0079BA</color>
 </resources>

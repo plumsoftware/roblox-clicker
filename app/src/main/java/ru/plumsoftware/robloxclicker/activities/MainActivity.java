@@ -4,12 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -25,6 +30,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.yandex.mobile.ads.appopenad.AppOpenAd;
 import com.yandex.mobile.ads.appopenad.AppOpenAdEventListener;
 import com.yandex.mobile.ads.appopenad.AppOpenAdLoadListener;
@@ -47,6 +55,8 @@ import com.yandex.mobile.ads.rewarded.RewardedAdLoader;
 
 import ru.plumsoftware.robloxclicker.R;
 import ru.plumsoftware.robloxclicker.data.Data;
+import ru.plumsoftware.robloxclicker.data.ads.AdsData;
+import ru.plumsoftware.robloxclicker.data.ads.RuStore;
 import ru.plumsoftware.robloxclicker.dialogs.CustomProgressDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     private RewardedAdLoader mRewardedAdLoader = null;
     private AppOpenAdLoader appOpenAdLoader = null;
-    private final String AD_UNIT_ID = "R-M-2483723-3";
+    private AdsData adsConfig = new RuStore();
+    private final String AD_UNIT_ID = adsConfig.getOpen();
     private final AdRequestConfiguration adRequestConfiguration = new AdRequestConfiguration.Builder(AD_UNIT_ID).build();
 
     private AppOpenAd mAppOpenAd = null;
@@ -70,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewScore;
 
     private final double TABLET_SCREEN_SIZE_THRESHOLD = 7.0;
+
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
 
     @SuppressLint("SetTextI18n")
@@ -102,6 +115,16 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, () -> {
 
         });
+        FirebaseApp.initializeApp(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        1001);
+            }
+        }
 
         BannerAdView mBannerAdView = (BannerAdView) findViewById(R.id.ad_banner_view);
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -120,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             bannerHeight = (int) (screenHeight * 0.04);
         }
 
-        mBannerAdView.setAdUnitId("R-M-2483723-5"); //RuStore
+        mBannerAdView.setAdUnitId(adsConfig.getBanner()); //RuStore
         mBannerAdView.setAdSize(BannerAdSize.inlineSize(MainActivity.this, screenWidth, bannerHeight));
         final AdRequest adRequestB = new AdRequest.Builder().build();
         mBannerAdView.setBannerAdEventListener(new BannerAdEventListener() {
@@ -370,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (mRewardedAdLoader != null) {
                     final AdRequestConfiguration adRequestConfiguration =
-                            new AdRequestConfiguration.Builder("R-M-2483723-1").build();
+                            new AdRequestConfiguration.Builder(adsConfig.getRewarded()).build();
                     mRewardedAdLoader.loadAd(adRequestConfiguration);
                 }
             }
@@ -465,6 +488,16 @@ public class MainActivity extends AppCompatActivity {
 //        endregion
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+    }
 
     @Override
     protected void onDestroy() {
@@ -475,5 +508,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         sharedPreferences.edit().putBoolean("isShowAppOpen", true).apply();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {} else {}
+        }
     }
 }
